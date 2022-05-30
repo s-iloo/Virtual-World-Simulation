@@ -1,0 +1,101 @@
+import processing.core.PImage;
+
+import java.util.List;
+import java.util.Optional;
+
+public class Crab extends Move{
+
+    private final String QUAKE_KEY = "quake";
+
+    public Crab(String id, Point position, List<PImage> images, int actionPeriod, int animationPeriod){
+        super(id, position, images, actionPeriod, animationPeriod);
+    }
+
+
+    public void executeEntity(WorldModel world,
+                                    ImageStore imageStore, EventScheduler scheduler)
+    {
+        Optional<Entity> crabTarget = world.findNearest(
+                super.getPosition(), Sgrass.class);
+        long nextPeriod = super.getActionPeriod();
+
+        if (crabTarget.isPresent())
+        {
+            Point tgtPos = crabTarget.get().getPosition();
+
+            if (this.moveTo(world, crabTarget.get(), scheduler))
+            {
+                //pass the right parameter
+                Quake quake = Create.createQuake(tgtPos,
+                        imageStore.getImageList(QUAKE_KEY));
+
+                world.addEntity(quake);
+                nextPeriod += super.getActionPeriod();
+                quake.scheduleActions(scheduler, world, imageStore);
+            }
+        }
+
+        scheduler.scheduleEvent(this,
+                super.createActivityAction(world, imageStore),
+                nextPeriod);
+    }
+    public void scheduleActions(EventScheduler scheduler,
+                                WorldModel world, ImageStore imageStore)
+    {
+        scheduler.scheduleEvent(this,
+                super.createActivityAction(world, imageStore),
+                super.getActionPeriod());
+        scheduler.scheduleEvent(this,
+                super.createAnimationAction(0), super.getAnimationPeriod());
+    }
+
+    public boolean moveTo(WorldModel world,
+                               Entity target, EventScheduler scheduler)
+    {
+        if (Point.adjacent(this.getPosition(), target.getPosition()))
+        {
+            world.removeEntity(target);
+            scheduler.unscheduleAllEvents(target);
+            return true;
+        }
+        else
+        {
+            Point nextPos = this.nextPosition(world, target.getPosition());
+
+            if (!super.getPosition().equals(nextPos))
+            {
+                Optional<Entity> occupant = world.getOccupant(nextPos);
+                if (occupant.isPresent())
+                {
+                    scheduler.unscheduleAllEvents(occupant.get());
+                }
+
+                world.moveEntity(this, nextPos);
+            }
+            return false;
+        }
+    }
+    public Point nextPosition(WorldModel world,
+                                   Point destPos) {
+        int horiz = Integer.signum(destPos.getX() - super.getPosition().getX());
+        Point newPos = new Point(super.getPosition().getX() + horiz,
+                super.getPosition().getY());
+
+        Optional<Entity> occupant = world.getOccupant(newPos);
+
+        if (horiz == 0 ||
+                (occupant.isPresent() && !(occupant.get() instanceof Fish))) {
+            int vert = Integer.signum(destPos.getY() - super.getPosition().getY());
+            newPos = new Point(super.getPosition().getX(), super.getPosition().getY() + vert);
+            occupant = world.getOccupant(newPos);
+
+            if (vert == 0 ||
+                    (occupant.isPresent() && !(occupant.get() instanceof Fish))) {
+                newPos = super.getPosition();
+            }
+        }
+
+        return newPos;
+    }
+
+}
