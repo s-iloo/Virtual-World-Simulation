@@ -11,6 +11,7 @@ public class Crab extends Move{
         super(id, position, images, actionPeriod, animationPeriod);
     }
 
+    private PathingStrategy strategy = new SingleStepPathingStrategy();
 
     public void executeEntity(WorldModel world,
                                     ImageStore imageStore, EventScheduler scheduler)
@@ -77,16 +78,22 @@ public class Crab extends Move{
     }
     public Point nextPosition(WorldModel world,
                                    Point destPos) {
+
         int horiz = Integer.signum(destPos.getX() - super.getPosition().getX());
         Point newPos = new Point(super.getPosition().getX() + horiz,
                 super.getPosition().getY());
+
 
         Optional<Entity> occupant = world.getOccupant(newPos);
 
         if (horiz == 0 ||
                 (occupant.isPresent() && !(occupant.get() instanceof Fish))) {
             int vert = Integer.signum(destPos.getY() - super.getPosition().getY());
-            newPos = new Point(super.getPosition().getX(), super.getPosition().getY() + vert);
+            List<Point> points = strategy.computePath(getPosition(), destPos,
+                    p -> world.withinBounds(p) && !world.isOccupied(p), Point::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
+            if(points.size() != 0)
+                newPos = points.get(0);
+
             occupant = world.getOccupant(newPos);
 
             if (vert == 0 ||
@@ -94,8 +101,6 @@ public class Crab extends Move{
                 newPos = super.getPosition();
             }
         }
-
         return newPos;
     }
-
 }
