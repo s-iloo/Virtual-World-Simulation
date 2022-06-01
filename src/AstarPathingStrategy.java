@@ -32,6 +32,4 @@ public class AstarPathingStrategy implements PathingStrategy {
         // loop will end when we find a route to the destination or we run out of steps
         // if a route is found, we back track up the records of how we reached each location to determine the path
 
-
-    }
 }
