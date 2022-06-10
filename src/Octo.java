@@ -4,11 +4,12 @@ import java.util.List;
 
 public abstract class Octo extends Move{
     private final int resourceLimit;
-    private PathingStrategy strategy = new SingleStepPathingStrategy();
+    //private static final PathingStrategy octoPathing = new AstarPathingStrategy();
+    private static final PathingStrategy octoPathing = new SingleStepPathingStrategy();
     public Octo(String id, Point position,
                          List<PImage> images, int resourceLimit,
                          int actionPeriod, int animationPeriod){
-        super(id, position, images, actionPeriod, animationPeriod);
+        super(id, position, images, actionPeriod, animationPeriod, octoPathing);
         this.resourceLimit = resourceLimit;
     }
 
@@ -27,7 +28,7 @@ public abstract class Octo extends Move{
         if (horiz == 0 || world.isOccupied(newPos)) {
             int vert = Integer.signum(destPos.getY() - this.getPosition().getY());
 
-            List<Point> points = strategy.computePath(getPosition(), destPos,
+            List<Point> points = getStrategy().computePath(getPosition(), destPos,
                     p -> world.withinBounds(p) && !world.isOccupied(p), Point::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
             //newPos = new Point(this.getPosition().getX(), this.getPosition().getY() + vert);
             if(points.size() != 0){

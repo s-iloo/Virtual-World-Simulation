@@ -25,6 +25,9 @@ final class WorldView
       this.tileHeight = tileHeight;
       this.viewport = new Viewport(numRows, numCols);
    }
+   public Viewport getViewport(){
+      return this.viewport;
+   }
    public void shiftView(int colDelta, int rowDelta) {
       int newCol = Functions.clamp(viewport.getCol() + colDelta, 0,
               world.getNumCols() - viewport.getNumCols());

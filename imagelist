@@ -34,3 +34,16 @@ quake images/quake6.bmp 255 255 255 0
 bubbles images/bubbles.bmp
 seaGrass images/Seaweed1.bmp 255 255 255 0
 background_default images/none.bmp
+lava images/lava.bmp 255 255 255 0
+octo_corrupted images/s1.bmp 255 255 69 0
+octo_corrupted images/s2.bmp 255 255 69 0
+octo_corrupted images/s3.bmp 255 255 69 0
+octo_corrupted images/s4.bmp 255 255 69 0
+octo_corrupted images/s5.bmp 255 255 69 0
+wyvern images/wyvern1.bmp 255 255 255 128
+wyvern images/wyvern2.bmp 255 255 255 128
+wyvern images/wyvern4.bmp 255 255 255 128
+wyvern images/wyvern5.bmp 255 255 255 128
+wyvern images/wyvern6.bmp 255 255 255 128
+wyvern images/wyvern7.bmp 255 255 255 128
+wyvern images/wyvern8.bmp 255 255 255 128

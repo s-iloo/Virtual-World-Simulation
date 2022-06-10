@@ -66,4 +66,10 @@ final class Point
 
       return deltaX * deltaX + deltaY * deltaY;
    }
+   public int distance(Point p1){
+      int deltaX = p1.x - this.x;
+      int deltaY = p1.y - this.y;
+
+      return (int) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+   }
 }

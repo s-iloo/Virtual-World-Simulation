@@ -26,7 +26,7 @@
             return gCost;
         }
 
-        public int gethCost() {
+        public double gethCost() {
             return hCost;
         }
 
@@ -34,4 +34,3 @@
             return fCost;
         }
     }
-}

@@ -58,8 +58,7 @@ public class Parse {
             Point pt = new Point(
                     Integer.parseInt(properties[OBSTACLE_COL]),
                     Integer.parseInt(properties[OBSTACLE_ROW]));
-            Entity entity = Create.createObstacle(properties[OBSTACLE_ID],
-                    pt, imageStore.getImageList(OBSTACLE_KEY));
+            Entity entity = Create.createObstacle(properties[OBSTACLE_ID], pt, imageStore.getImageList(OBSTACLE_KEY));
             WorldModel.tryAddEntity(entity);
         }
 

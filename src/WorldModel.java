@@ -28,6 +28,11 @@ final class WorldModel {
          Arrays.fill(this.background[row], defaultBackground);
       }
    }
+
+   public static Background[][] getBackground() {
+      return background;
+   }
+
    public int getNumRows() {
       return this.numRows;
    }
@@ -54,7 +59,7 @@ final class WorldModel {
       this.removeEntityAt(entity.getPosition());
    }
 
-   private void removeEntityAt(Point pos) {
+   public void removeEntityAt(Point pos) {
       if (this.withinBounds(pos)
               && this.getOccupancyCell(pos) != null) {
          Entity entity = this.getOccupancyCell(pos);
@@ -118,7 +123,6 @@ final class WorldModel {
          // defining our own exceptions yet
          throw new IllegalArgumentException("position occupied");
       }
-
       addEntity(entity);
    }
 
@@ -136,7 +140,7 @@ final class WorldModel {
       return occupancy[pos.getY()][pos.getX()];
    }
 
-   private static void setOccupancyCell(Point pos,
+   public static void setOccupancyCell(Point pos,
                                        Entity entity) {
       occupancy[pos.getY()][pos.getX()] = entity;
    }

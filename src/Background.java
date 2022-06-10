@@ -29,7 +29,7 @@ final class Background
 
       return properties.length == BGND_NUM_PROPERTIES;
    }
-   private static void setBackground(WorldModel world, Point pos,
+   public static void setBackground(WorldModel world, Point pos,
                                     Background background) {
       if (world.withinBounds(pos)) {
          world.setBackgroundCell(pos, background);
